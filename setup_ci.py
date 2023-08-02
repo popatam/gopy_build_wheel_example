@@ -17,7 +17,7 @@ PACKAGE_NAME=PACKAGE_PATH.split("/")[-1]
 
 if sys.platform == 'darwin':
     # PYTHON_BINARY_PATH is setting explicitly for 310 and 311, see build_wheel.yml
-    # on macos PYTHON_BINARY_PATH must be python bin installed from python.org
+    # on macos PYTHON_BINARY_PATH must be python bin installed from python.org or from brew
     PYTHON_BINARY = os.getenv("PYTHON_BINARY_PATH", sys.executable)
     if PYTHON_BINARY == sys.executable:
         subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pybindgen'])
