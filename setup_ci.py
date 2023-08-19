@@ -2,18 +2,22 @@ import json
 import os
 import subprocess
 import sys
+import re
 from distutils.core import Extension
 
 import setuptools
 from setuptools.command.build_ext import build_ext
 
 
+def normalize(name):  # https://peps.python.org/pep-0503/#normalized-names
+    return re.sub(r"[-_.]+", "-", name).lower()
+
 PACKAGE_PATH="simple_go_timer"
 PACKAGE_NAME=PACKAGE_PATH.split("/")[-1]
 
 if sys.platform == 'darwin':
     # PYTHON_BINARY_PATH is setting explicitly for 310 and 311, see build_wheel.yml
-    # on macos PYTHON_BINARY_PATH must be python bin installed from python.org
+    # on macos PYTHON_BINARY_PATH must be python bin installed from python.org or from brew
     PYTHON_BINARY = os.getenv("PYTHON_BINARY_PATH", sys.executable)
     if PYTHON_BINARY == sys.executable:
         subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pybindgen'])
@@ -56,7 +60,7 @@ class CustomBuildExt(build_ext):
 
 
 setuptools.setup(
-    name=PACKAGE_NAME,
+    name=normalize(PACKAGE_NAME),
     version="0.1.0",
     author="change_me",
     author_email="change_me@example.com",

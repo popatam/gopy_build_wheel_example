@@ -2,11 +2,14 @@ import json
 import os
 import subprocess
 import sys
+import re
 from distutils.core import Extension
 
 import setuptools
 from setuptools.command.build_ext import build_ext
 
+def normalize(name):  # https://peps.python.org/pep-0503/#normalized-names
+    return re.sub(r"[-_.]+", "-", name).lower()
 
 PACKAGE_PATH=REPLACE_ME
 PACKAGE_NAME=PACKAGE_PATH.split("/")[-1]
@@ -62,7 +65,7 @@ class CustomBuildExt(build_ext):
 
 
 setuptools.setup(
-    name=PACKAGE_NAME,
+    name=normalize(PACKAGE_NAME),
     version="0.1.0",
     author="change_me",
     author_email="change_me@example.com",
